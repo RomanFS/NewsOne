@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/emailed_tab"
+          android:icon="@drawable/ic_emailed"
+          android:title="Most Emailed"/>
+    <item android:id="@+id/viewed_tab"
+          android:icon="@drawable/ic_viewed"
+          android:title="Most Viewed"/>
+    <item android:id="@+id/shared_tab"
+          android:icon="@drawable/ic_shared"
+          android:title="Most Shared"/>
+    <item android:id="@+id/favourite_tab"
+          android:icon="@drawable/ic_favourite"
+          android:title="Favourite"/>
+</menu>
