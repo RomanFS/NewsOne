@@ -17,6 +17,7 @@ class NewsAdapter(val context: Context, val bundle: Bundle?): RecyclerView.Adapt
         val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
         view.see_more.setOnClickListener {
             val intent = Intent(context, InnerActivity::class.java)
+            intent.putExtra("url", "haha")
             startActivity(context, intent, bundle)
         }
         return ViewHolder(view)
