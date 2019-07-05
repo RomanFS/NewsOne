@@ -1,6 +1,7 @@
 package com.example.newsone
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -17,6 +18,6 @@ class ViewedActivity : BaseActivity(1) {
         Log.d(TAG, "onCreate: ")
 
         news_rv.layoutManager = LinearLayoutManager(context)
-        news_rv.adapter = NewsAdapter()
+        news_rv.adapter = NewsAdapter(context, savedInstanceState)
     }
 }
