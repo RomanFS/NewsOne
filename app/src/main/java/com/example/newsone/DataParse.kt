@@ -1,7 +1,7 @@
 package com.example.newsone
 
 import android.os.AsyncTask
-import org.json.JSONArray
+import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -11,17 +11,17 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, String?>() {
+class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
+    private val TAG = "DataParse"
     var data = ""
-    var dataParsed = ""
-    var singleParsed = ""
+    var dataParsed: ArrayList<JSONObject> = ArrayList(20)
 
     interface AsyncResponse {
-        fun processFinish(output: String)
+        fun processFinish(output: ArrayList<JSONObject>)
     }
 
 
-    override fun doInBackground(vararg voids: Void): String? {
+    override fun doInBackground(vararg voids: Void): ArrayList<JSONObject> {
         try {
             val url = URL("https://api.nytimes.com/svc/mostpopular/v2/emailed/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ")
             val httpURLConnection = url.openConnection() as HttpURLConnection
@@ -33,16 +33,23 @@ class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, String?>() 
                 data += line
             }
 
-            val JA = JSONArray(data)
-            for (i in 0 until JA.length()) {
-                val JO = JA.get(i) as JSONObject
-                singleParsed = "status: " + JO.get("status")
-                    /*"Name:" + JO.get("name") + "\n" +
-                        "Password:" + JO.get("password") + "\n" +
-                        "Contact:" + JO.get("contact") + "\n" +
-                        "Country:" + JO.get("country") + "\n"*/
+            val jsobj = JSONObject(data)
+            val jsarray = jsobj.getJSONArray("results")
+            for (i in 0 until  jsarray.length()) {
+                val oneNews = jsarray.get(i) as JSONObject
+                val dataObject = JSONObject()
 
-                dataParsed = dataParsed + singleParsed + "\n"
+                dataObject.put("url", oneNews.getString("url"))
+                dataObject.put("title", oneNews.getString("title"))
+                dataObject.put("desc", oneNews.getString("abstract"))
+                dataObject.put("copyright", oneNews.getJSONArray("media").getJSONObject(0).getString("copyright"))
+                dataObject.put("copyright", oneNews.getJSONArray("media").getJSONObject(0)
+                    .getJSONArray("media-metadata").getJSONObject(2).getString("url"))
+                dataObject.put("source", oneNews.getString("source"))
+                dataObject.put("published_date", oneNews.getString("published_date"))
+                dataObject.put("byline", oneNews.getString("byline"))
+
+                dataParsed.add(oneNews)
             }
 
         } catch (e: Throwable) {
@@ -53,10 +60,11 @@ class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, String?>() 
             e.printStackTrace()
         }
 
-        return null
+        Log.d(TAG, "doInBackground: " + dataParsed.size)
+        return dataParsed
     }
 
-    override fun onPostExecute(result: String?) {
-        delegate.processFinish(data)
+    override fun onPostExecute(result: ArrayList<JSONObject>) {
+        delegate.processFinish(result)
     }
 }

@@ -5,25 +5,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_border_grey">
-
     <TextView
-            android:layout_marginStart="10dp"
-            android:paddingBottom="10dp"
-            android:id="@+id/published_date"
+            android:id="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/copyright"
-            android:text="2019-06-08"
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    <TextView
-            android:layout_marginEnd="10dp"
-            android:id="@+id/byline"
-            app:layout_constraintBaseline_toBaselineOf="@id/published_date"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="By DANIELLE OFRI"
+            android:padding="10dp"
+            android:textSize="24sp"
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:text="a"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     <ImageView
             android:layout_marginStart="10dp"
@@ -34,40 +25,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
     <TextView
-            android:id="@+id/title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:padding="10dp"
-            android:textSize="24sp"
-            android:textColor="@android:color/black"
-            android:text="The Business of Health Care Depends on Exploiting Doctors and Nurses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <TextView
             android:id="@+id/desc"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toTopOf="@id/image"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
-            android:text="One resource seems infinite and free: the professionalism of caregivers."
+            android:text="a"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-    <TextView
-            android:padding="10dp"
-            android:id="@+id/copyright"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image"
-            android:text="Delcan &amp; Company"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    <TextView
-            android:layout_marginEnd="10dp"
-            android:id="@+id/source"
-            app:layout_constraintBaseline_toBaselineOf="@id/copyright"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="The New York Times"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     <Button
             android:id="@+id/see_more"
@@ -78,5 +42,40 @@
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:padding="10dp"
+            android:id="@+id/copyright"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image"
+            android:text="a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:layout_marginEnd="10dp"
+            android:id="@+id/source"
+            app:layout_constraintBaseline_toBaselineOf="@id/copyright"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:layout_marginStart="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/published_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/copyright"
+            android:text="a"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:layout_marginEnd="10dp"
+            android:id="@+id/byline"
+            app:layout_constraintBaseline_toBaselineOf="@id/published_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="a"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 </android.support.constraint.ConstraintLayout>

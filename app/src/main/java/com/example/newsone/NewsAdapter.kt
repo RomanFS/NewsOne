@@ -11,10 +11,19 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsAdapter(val context: Context, val bundle: Bundle?): RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
-    private val mDataSet: Array<String>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+
+        // set data
+        view.title.text = "The Business of Health Care Depends on Exploiting Doctors and Nurses"
+        //view.image.source.text = ""
+        view.desc.text = "One resource seems infinite and free: the professionalism of caregivers."
+        view.copyright.text = "Delcan &amp; Company"
+        view.source.text = "The New York Times"
+        view.published_date.text = "2019-06-08"
+        view.byline.text = "By DANIELLE OFRI"
+
         view.see_more.setOnClickListener {
             val intent = Intent(context, InnerActivity::class.java)
             intent.putExtra("url", "haha")
