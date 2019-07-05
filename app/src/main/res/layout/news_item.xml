@@ -11,72 +11,82 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:padding="10dp"
             android:textSize="24sp"
-            android:textColor="@android:color/black"
-            android:text="a"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <ImageView
+            android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:id="@+id/image"
-            android:src="@drawable/large"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
+            android:layout_marginEnd="10dp"
+            android:textColor="@android:color/black"
+            android:text="6 Places in Europe Offering Shelter From the Crowds"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
     <TextView
             android:id="@+id/desc"
-            app:layout_constraintStart_toEndOf="@id/image"
-            app:layout_constraintTop_toTopOf="@id/image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
-            android:text="a"
+            android:layout_marginEnd="10dp"
+            android:text="Daytrippers, cruise ships, home-sharing, cheap airlines: They all contribute to tourism saturation in European hotspots. But there are quieter alternatives, if you know where to look."
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
+    <ImageView
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/image"
+            android:src="@drawable/large"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:id="@+id/published_date"
+            android:text="2019-06-08"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/image"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"/>
     <Button
             android:id="@+id/see_more"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="See more"
-            app:layout_constraintBottom_toBottomOf="@id/image"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/image"/>
+    <TextView
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/source"
+            app:layout_constraintStart_toEndOf="@id/image"
+            android:text="The New York Times"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image"/>
     <TextView
             android:padding="10dp"
             android:id="@+id/copyright"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image"
-            android:text="a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    <TextView
-            android:layout_marginEnd="10dp"
-            android:id="@+id/source"
-            app:layout_constraintBaseline_toBaselineOf="@id/copyright"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:text="Emilio Parra Doiztua for The New York Times"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/published_date"/>
     <TextView
             android:layout_marginStart="10dp"
-            android:paddingBottom="10dp"
-            android:id="@+id/published_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/copyright"
-            android:text="a"
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    <TextView
             android:layout_marginEnd="10dp"
             android:id="@+id/byline"
-            app:layout_constraintBaseline_toBaselineOf="@id/published_date"
-            app:layout_constraintEnd_toEndOf="parent"
-
+            android:text="By DANIELLE OFRI"
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/source"/>
 </android.support.constraint.ConstraintLayout>
