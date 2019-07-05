@@ -4,10 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_favourite.*
-import kotlinx.android.synthetic.main.activity_favourite.news_rv
-import kotlinx.android.synthetic.main.activity_viewed.*
 import org.json.JSONObject
 
 class FavouriteActivity : BaseActivity(3), DataParse.AsyncResponse {

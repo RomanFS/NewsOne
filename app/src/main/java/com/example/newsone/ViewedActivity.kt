@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_viewed.*
 import kotlinx.android.synthetic.main.activity_viewed.news_rv
 import org.json.JSONObject
+import kotlin.system.exitProcess
 
 class ViewedActivity : BaseActivity(1), DataParse.AsyncResponse {
     private val TAG = "ViewedActivity"
@@ -34,5 +35,10 @@ class ViewedActivity : BaseActivity(1), DataParse.AsyncResponse {
     override fun onPause() {
         super.onPause()
         task.cancel(true)
+    }
+
+    override fun onBackPressed() {
+        finish()
+        exitProcess(0)
     }
 }

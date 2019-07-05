@@ -37,6 +37,7 @@ class NewsAdapter(val context: Context,
 
         item.see_more.setOnClickListener {
             val intent = Intent(context, InnerActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             intent.putExtra("url", mDataSet[position].getString("url"))
             startActivity(context, intent, Bundle())
         }
@@ -47,4 +48,5 @@ class NewsAdapter(val context: Context,
     override fun getItemCount(): Int {
         return mDataSet.size
     }
+
 }

@@ -13,7 +13,10 @@ class InnerActivity: AppCompatActivity() {
         setContentView(R.layout.activity_inner)
 
         val url = intent.getStringExtra("url")
-
         web_view.loadUrl(url)
+
+        back_arrow.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

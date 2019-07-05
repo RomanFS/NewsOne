@@ -4,10 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_shared.*
-import kotlinx.android.synthetic.main.activity_shared.news_rv
-import kotlinx.android.synthetic.main.activity_viewed.*
 import org.json.JSONObject
 
 class SharedActivity : BaseActivity(2), DataParse.AsyncResponse {
@@ -29,10 +26,5 @@ class SharedActivity : BaseActivity(2), DataParse.AsyncResponse {
 
     override fun processFinish(output: ArrayList<JSONObject>) {
         news_rv.adapter = NewsAdapter(context, output)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        task.cancel(true)
     }
 }
