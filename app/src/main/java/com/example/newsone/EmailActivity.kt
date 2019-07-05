@@ -27,5 +27,6 @@ class EmailActivity : BaseActivity(0), AsyncResponse {
 
     override fun processFinish(output: ArrayList<JSONObject>) {
         mDataSet = output
+        data_view.text = output[1].getString("image_url")
     }
 }

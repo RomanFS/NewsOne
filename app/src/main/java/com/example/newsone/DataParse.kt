@@ -9,6 +9,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.math.log
 
 
 class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
@@ -36,6 +37,7 @@ class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, ArrayList<J
             val jsobj = JSONObject(data)
             val jsarray = jsobj.getJSONArray("results")
             for (i in 0 until  jsarray.length()) {
+                //Log.d(TAG, "doInBackground: $i")
                 val oneNews = jsarray.get(i) as JSONObject
                 val dataObject = JSONObject()
 
@@ -43,13 +45,14 @@ class DataParse(val delegate: AsyncResponse) : AsyncTask<Void, Void, ArrayList<J
                 dataObject.put("title", oneNews.getString("title"))
                 dataObject.put("desc", oneNews.getString("abstract"))
                 dataObject.put("copyright", oneNews.getJSONArray("media").getJSONObject(0).getString("copyright"))
-                dataObject.put("copyright", oneNews.getJSONArray("media").getJSONObject(0)
+                dataObject.put("image_url", oneNews.getJSONArray("media").getJSONObject(0)
                     .getJSONArray("media-metadata").getJSONObject(2).getString("url"))
                 dataObject.put("source", oneNews.getString("source"))
                 dataObject.put("published_date", oneNews.getString("published_date"))
                 dataObject.put("byline", oneNews.getString("byline"))
 
-                dataParsed.add(oneNews)
+                dataParsed.add(dataObject)
+                dataParsed[i].getString("image_url")
             }
 
         } catch (e: Throwable) {
