@@ -3,6 +3,7 @@ package com.example.newsone
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_inner.*
 
 class InnerActivity: AppCompatActivity() {
     private val TAG = "InnerActivity"
@@ -11,6 +12,8 @@ class InnerActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inner)
 
-        Log.d(TAG, intent.getStringExtra("url"))
+        val url = intent.getStringExtra("url")
+
+        web_view.loadUrl(url)
     }
 }

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_border_grey">
@@ -74,7 +75,7 @@
             android:id="@+id/byline"
             app:layout_constraintBaseline_toBaselineOf="@id/published_date"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="a"
+
             android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
