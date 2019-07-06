@@ -66,7 +66,9 @@ class DataParse(private val delegate: AsyncResponse, private val parseUrl: Strin
         }
         val jsarray = jsobj.getJSONArray("results")
         Log.d(TAG, "fetchData: ")
-        for (i in jsarray.length()-1 downTo 0) {
+
+        //  for (i in jsarray.length()-1 downTo 0) - reversed
+        for (i in 0 until jsarray.length()) {
             //Log.d(TAG, "doInBackground: $i")
             val oneNews = jsarray.get(i) as JSONObject
             val dataObject = JSONObject()
