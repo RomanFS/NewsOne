@@ -12,7 +12,6 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
-import kotlin.math.log
 
 
 class DataParse(private val delegate: AsyncResponse, private val parseUrl: String) : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
@@ -76,8 +75,7 @@ class DataParse(private val delegate: AsyncResponse, private val parseUrl: Strin
             dataObject.put("title", oneNews.getString("title"))
             dataObject.put("desc", oneNews.getString("abstract"))
             dataObject.put("copyright", oneNews.getJSONArray("media").getJSONObject(0).getString("copyright"))
-            dataObject.put(
-                "image_url", oneNews.getJSONArray("media").getJSONObject(0)
+            dataObject.put("image_url", oneNews.getJSONArray("media").getJSONObject(0)
                     .getJSONArray("media-metadata").getJSONObject(2).getString("url")
             )
             dataObject.put("source", oneNews.getString("source"))
