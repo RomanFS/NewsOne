@@ -1,5 +1,7 @@
 package com.example.newsone
 
+import android.content.ContentValues
+import android.content.Context
 import android.os.AsyncTask
 import android.os.Build
 import android.support.annotation.RequiresApi
@@ -14,8 +16,14 @@ import java.net.MalformedURLException
 import java.net.URL
 
 
-class DataParse(private val delegate: AsyncResponse, private val parseUrl: String) : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
+class DataParse(
+    private val delegate: AsyncResponse,
+    private val parseUrl: String,
+    private val tableName: String,
+    private val baseContext: Context
+) : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
     private val TAG = "DataParse"
+    var mContext: Context? = baseContext
     var data = ""
     var dataParsed: ArrayList<JSONObject> = ArrayList(20)
 
@@ -77,7 +85,8 @@ class DataParse(private val delegate: AsyncResponse, private val parseUrl: Strin
             dataObject.put("title", oneNews.getString("title"))
             dataObject.put("desc", oneNews.getString("abstract"))
             dataObject.put("copyright", oneNews.getJSONArray("media").getJSONObject(0).getString("copyright"))
-            dataObject.put("image_url", oneNews.getJSONArray("media").getJSONObject(0)
+            dataObject.put(
+                "image_url", oneNews.getJSONArray("media").getJSONObject(0)
                     .getJSONArray("media-metadata").getJSONObject(2).getString("url")
             )
             dataObject.put("source", oneNews.getString("source"))
@@ -87,6 +96,60 @@ class DataParse(private val delegate: AsyncResponse, private val parseUrl: Strin
             dataParsed.add(dataObject)
             Log.d(TAG, "fetchData: dataParsed")
         }
+        //baseContext.deleteDatabase("$tableName.db")
+        val database = baseContext.openOrCreateDatabase("newsData.db", Context.MODE_PRIVATE, null)
+        Log.d(TAG, "DROP TABLE IF EXISTS $tableName")
+        database.execSQL("DROP TABLE IF EXISTS $tableName")
+        val sql = "CREATE TABLE IF NOT EXISTS $tableName" +
+                "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, title TEXT, " +
+                "descrip TEXT, copyright TEXT, image_url TEXT, source TEXT, published_date TEXT, byline TEXT)"
+        Log.d(TAG, "onCreate: sql is $sql")
+        database.execSQL(sql)
+
+
+        for (i in 0 until jsarray.length()) {
+            val values = ContentValues().apply {
+                //Log.d(TAG, "doInBackground: $i")
+                val oneNews = jsarray.get(i) as JSONObject
+                this.put("url", oneNews.getString("url"))
+                this.put("title", oneNews.getString("title"))
+                this.put("descrip", oneNews.getString("abstract"))
+                this.put("copyright", oneNews.getJSONArray("media").getJSONObject(0).getString("copyright"))
+                this.put(
+                    "image_url", oneNews.getJSONArray("media").getJSONObject(0)
+                        .getJSONArray("media-metadata").getJSONObject(2).getString("url")
+                )
+                this.put("source", oneNews.getString("source"))
+                this.put("published_date", oneNews.getString("published_date"))
+                this.put("byline", oneNews.getString("byline"))
+
+                Log.d(TAG, "fetchData: dataSated")
+            }
+            val generatedId = database.insert(tableName, null, values)
+            Log.d(TAG, "onCreate: record added with id $generatedId")
+        }
+
+        val query = database.rawQuery("SELECT * FROM $tableName", null)
+        query.use {
+            while (it.moveToNext()) {
+                // Cycle through all records
+                with(it) {
+                    val id = getLong(0)
+                    val url = getString(1)
+                    val title = getString(2)
+                    val descrip = getString(3)
+                    val copyright = getString(4)
+                    val imageUrl = getString(5)
+                    val source = getString(6)
+                    val byline = getString(7)
+                    val result =
+                        "ID: $id. Name = $url phone = $title email = $descrip copyright = $copyright imageUrl = $imageUrl source = $source byline = $byline"
+                    Log.d(TAG, "onCreate: reading data $result")
+                }
+            }
+        }
+
+        database.close()
     }
 
     override fun onPostExecute(result: ArrayList<JSONObject>) {

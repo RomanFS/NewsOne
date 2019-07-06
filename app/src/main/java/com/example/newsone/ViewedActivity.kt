@@ -1,21 +1,18 @@
 package com.example.newsone
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_viewed.*
-import kotlinx.android.synthetic.main.activity_viewed.news_rv
 import org.json.JSONObject
 import kotlin.system.exitProcess
 
 class ViewedActivity : BaseActivity(1), DataParse.AsyncResponse {
     private val TAG = "ViewedActivity"
-    val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/viewed/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
+    private val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/viewed/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
     val context: Context = this
-    private val task = DataParse(this, parseUrl).execute()
+    private val task = DataParse(this, parseUrl, "viewed", context)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +20,7 @@ class ViewedActivity : BaseActivity(1), DataParse.AsyncResponse {
         setUpBtmNav()
         Log.d(TAG, "onCreate: ")
 
-        DataParse(this, parseUrl).execute()
+        task.execute()
 
         news_rv.layoutManager = LinearLayoutManager(context)
     }

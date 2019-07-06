@@ -13,7 +13,7 @@ class EmailActivity : BaseActivity(0), AsyncResponse {
     private val TAG = "EmailActivity"
     private val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/emailed/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
     var context: Context = this
-    private val task = DataParse(this, parseUrl).execute()
+    private val task = DataParse(this, parseUrl, "emailed", context).execute()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

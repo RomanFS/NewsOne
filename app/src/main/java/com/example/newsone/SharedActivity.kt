@@ -9,9 +9,9 @@ import org.json.JSONObject
 
 class SharedActivity : BaseActivity(2), DataParse.AsyncResponse {
     private val TAG = "SharedActivity"
-    val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/shared/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
+    private val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/shared/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
     val context: Context = this
-    private val task = DataParse(this, parseUrl).execute()
+    private val task = DataParse(this, parseUrl, "shared", context)
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class SharedActivity : BaseActivity(2), DataParse.AsyncResponse {
         setUpBtmNav()
         Log.d(TAG, "onCreate: ")
 
-        DataParse(this, parseUrl).execute()
+        task.execute()
 
         news_rv.layoutManager = LinearLayoutManager(context)
     }
