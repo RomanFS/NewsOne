@@ -4,6 +4,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+
+private val TAG = "MyDBHandler"
 
 class MyDBHandler(context: Context, name: String?,
                   factory: SQLiteDatabase.CursorFactory?, version: Int) :
@@ -51,18 +54,24 @@ class MyDBHandler(context: Context, name: String?,
         db.close()
     }
 
-    fun findNews(tableName: String,newsTitle: String): NewsObject? {
-        val query = "SELECT * FROM $tableName WHERE title =  \"$newsTitle\""
+    fun findNews(tableName: String, ID: Int): NewsObject? {
+        val query = "SELECT * FROM $tableName WHERE _ID =  \"$ID\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         var news: NewsObject? = null
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst()
+            val _id = Integer.parseInt(cursor.getString(0))
+            val url = cursor.getString(1)
+            val title = cursor.getString(2)
+            val descrip = cursor.getString(3)
+            val copyright = cursor.getString(4)
+            val imageUrl = cursor.getString(5)
+            val source = cursor.getString(6)
+            val publishedDate = cursor.getString(7)
+            val byline = cursor.getString(8)
 
-            val id = Integer.parseInt(cursor.getString(0))
-            val name = cursor.getString(1)
-            val quantity = Integer.parseInt(cursor.getString(2))
             news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
             cursor.close()
         }
@@ -97,7 +106,7 @@ class MyDBHandler(context: Context, name: String?,
         const val TABLE_EMAILED = "emailed"
         const val TABLE_VIEWED = "viewed"
         const val TABLE_SHARED = "shared"
-        const val TABLE_FAVOURITE = "shared"
+        const val TABLE_FAVOURITE = "favourite"
         const val url = "url"
         const val title = "title"
         const val descrip = "descrip"

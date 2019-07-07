@@ -15,32 +15,40 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.news_item.view.*
 import org.json.JSONObject
 
-class NewsAdapter(val context: Context,
-                  private val mDataSet: ArrayList<JSONObject> = ArrayList())
-    : RecyclerView.Adapter<NewsAdapter.ViewHolder>(), ImageParse.AsyncImageResponse {
+private val TAG = "NewsAdapter"
 
-    private val TAG = "NewsAdapter"
+class NewsAdapter(val context: Context,
+                  private val tableName: String,
+                  private val myDB: MyDBHandler)
+    : RecyclerView.Adapter<NewsAdapter.ViewHolder>(), ImageParse.AsyncImageResponse {
+    var count = 20
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
         return ViewHolder(view)
     }
 
+    fun setItemCount(count: Int) {
+        this.count = count
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "onCreateViewHolder: $position")
         // set data
-        val item = holder.itemView
-        item.title.text = mDataSet[position].getString("title")
-        item.desc.text = mDataSet[position].getString("desc")
-        item.copyright.text = mDataSet[position].getString("copyright")
-        item.source.text = mDataSet[position].getString("source")
-        item.published_date.text = mDataSet[position].getString("published_date")
-        item.byline.text = mDataSet[position].getString("byline")
 
+        if (myDB.findNews(tableName, position+1) == null) return
+        val item = holder.itemView
+        val news = myDB.findNews(tableName, position+1)!!
+        item.title.text = news.title
+        item.desc.text = news.descrip
+        item.copyright.text = news.copyright
+        item.source.text = news.source
+        item.published_date.text = news.publishedDate
+        item.byline.text = news.byline
         item.see_more.setOnClickListener {
             val intent = Intent(context, InnerActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            intent.putExtra("url", mDataSet[position].getString("url"))
+            intent.putExtra("url", news.url)
             startActivity(context, intent, Bundle())
         }
         item.add_to_favourite.setOnClickListener{
@@ -52,7 +60,7 @@ class NewsAdapter(val context: Context,
         item.image.setImageBitmap(BitmapFactory.decodeResource(res, R.drawable.large))
 
         // get Image Bitmap
-        ImageParse(this, mDataSet[position].getString("image_url"), holder).execute()
+        ImageParse(this, news.imageUrl, holder).execute()
     }
 
     override fun processFinish(output: Bitmap?, holder: ViewHolder) {
@@ -62,7 +70,7 @@ class NewsAdapter(val context: Context,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun getItemCount(): Int {
-        return mDataSet.size
+        return 20
     }
 
 }

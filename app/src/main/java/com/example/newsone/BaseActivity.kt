@@ -5,8 +5,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_email.*
 
-abstract class BaseActivity(val itemNum: Int) : AppCompatActivity() {
-    private val TAG = "BaseActivity"
+private val TAG = "BaseActivity"
+
+abstract class BaseActivity(private val itemNum: Int) : AppCompatActivity() {
 
     fun setUpBtmNav() {
         btm_nav_view.setItemIconSizeRes(R.dimen.iconSize)
@@ -33,5 +34,9 @@ abstract class BaseActivity(val itemNum: Int) : AppCompatActivity() {
             }
         }
         btm_nav_view.menu.getItem(itemNum).isChecked = true
+    }
+    fun getDB(): MyDBHandler {
+        // create DataBase
+        return MyDBHandler(this, null, null, 1)
     }
 }

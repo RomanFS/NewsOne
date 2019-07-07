@@ -1,20 +1,19 @@
 package com.example.newsone
 
-import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import com.example.newsone.DataParse.AsyncResponse
 import kotlinx.android.synthetic.main.activity_email.*
-import org.json.JSONObject
 
 private val TAG = "EmailActivity"
 
-class EmailActivity : BaseActivity(0), AsyncResponse {
+class EmailActivity : BaseActivity(0), DataParse.AsyncResponse {
+    private lateinit var task: AsyncTask<Void, Void, Void>
+    private lateinit var myDB: MyDBHandler
+
     private val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/emailed/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
-    var context: Context = this
-    // start parser
-    private val task = DataParse(this, parseUrl, "emailed", context).execute()
+    private val tableName = "emailed"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,17 +23,19 @@ class EmailActivity : BaseActivity(0), AsyncResponse {
         // setUp BottomNavigation
         setUpBtmNav()
 
-        // create DataBase
-        MyDBHandler(this, null, null, 1)
+        myDB = getDB()
 
-        // set type of RecycleView
-        news_rv.layoutManager = LinearLayoutManager(context)
+        // start Parser
+        task = DataParse(this, parseUrl, tableName, myDB).execute()
+
+        // call adapter
+        news_rv.layoutManager = LinearLayoutManager(this)
     }
 
     // Async parser result
-    override fun processFinish(output: ArrayList<JSONObject>) {
-        // set data to RecycleView
-        news_rv.adapter = NewsAdapter(context, output)
+    override fun processFinish() {
+        Log.d(TAG, "processFinish: start Adapter")
+        news_rv.adapter = NewsAdapter(this, tableName, myDB)
     }
 
     override fun onDestroy() {
