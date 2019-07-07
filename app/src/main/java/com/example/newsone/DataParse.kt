@@ -98,7 +98,6 @@ class DataParse(
         }
         //baseContext.deleteDatabase("$tableName.db")
         val database = baseContext.openOrCreateDatabase("newsData.db", Context.MODE_PRIVATE, null)
-        Log.d(TAG, "DROP TABLE IF EXISTS $tableName")
         database.execSQL("DROP TABLE IF EXISTS $tableName")
         val sql = "CREATE TABLE IF NOT EXISTS $tableName" +
                 "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, title TEXT, " +

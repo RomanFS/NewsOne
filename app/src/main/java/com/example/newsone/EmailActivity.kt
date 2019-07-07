@@ -19,6 +19,9 @@ class EmailActivity : BaseActivity(0), AsyncResponse {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_email)
         Log.d(TAG, "onCreate: ")
+
+        
+
         setUpBtmNav()
 
         news_rv.layoutManager = LinearLayoutManager(context)
