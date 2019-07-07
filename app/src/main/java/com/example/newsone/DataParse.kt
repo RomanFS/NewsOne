@@ -15,15 +15,11 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
+private val TAG = "DataParse"
 
-class DataParse(
-    private val delegate: AsyncResponse,
-    private val parseUrl: String,
-    private val tableName: String,
-    private val baseContext: Context
-) : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
-    private val TAG = "DataParse"
-    var mContext: Context? = baseContext
+class DataParse(private val delegate: AsyncResponse, private val parseUrl: String, private val tableName: String, val baseContext: Context)
+    : AsyncTask<Void, Void, ArrayList<JSONObject>>() {
+    val context = this
     var data = ""
     var dataParsed: ArrayList<JSONObject> = ArrayList(20)
 
@@ -44,8 +40,6 @@ class DataParse(
             val bufferedReader = BufferedReader(InputStreamReader(inputStream))
             var line: String? = ""
             while (line != null) {
-                //Log.d(TAG, "doInBackground: " + bufferedReader.lines().count())
-                //TODO: ЧЕТО СДЕЛАТЬ С ОШИБКОЙ
                 line = bufferedReader.readLine()
                 data += line
             }
@@ -59,7 +53,7 @@ class DataParse(
 
         if (data.isNotEmpty()) {
             fetchData()
-            Log.d(TAG, "doInBackground: sacsses")
+            Log.d(TAG, "doInBackground: success")
             return dataParsed
         }
         return ArrayList()
@@ -68,9 +62,7 @@ class DataParse(
     private fun fetchData() {
         val jsobj = JSONObject(data)
         if (jsobj.has("fault")) {
-            //TODO: TOAST
-            Log.d(TAG, "error")
-            return
+            throw Exception("ERROR: timeLimit")
         }
         val jsarray = jsobj.getJSONArray("results")
         Log.d(TAG, "fetchData: ")
@@ -94,7 +86,7 @@ class DataParse(
             dataObject.put("byline", oneNews.getString("byline"))
 
             dataParsed.add(dataObject)
-            Log.d(TAG, "fetchData: dataParsed")
+            //Log.d(TAG, "fetchData: dataParsed")
         }
         //baseContext.deleteDatabase("$tableName.db")
         val database = baseContext.openOrCreateDatabase("newsData.db", Context.MODE_PRIVATE, null)
@@ -102,7 +94,7 @@ class DataParse(
         val sql = "CREATE TABLE IF NOT EXISTS $tableName" +
                 "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, title TEXT, " +
                 "descrip TEXT, copyright TEXT, image_url TEXT, source TEXT, published_date TEXT, byline TEXT)"
-        Log.d(TAG, "onCreate: sql is $sql")
+        //Log.d(TAG, "onCreate: sql is $sql")
         database.execSQL(sql)
 
 
@@ -122,10 +114,10 @@ class DataParse(
                 this.put("published_date", oneNews.getString("published_date"))
                 this.put("byline", oneNews.getString("byline"))
 
-                Log.d(TAG, "fetchData: dataSated")
+                //Log.d(TAG, "fetchData: dataSated")
             }
             val generatedId = database.insert(tableName, null, values)
-            Log.d(TAG, "onCreate: record added with id $generatedId")
+            //Log.d(TAG, "onCreate: record added with id $generatedId")
         }
 
         val query = database.rawQuery("SELECT * FROM $tableName", null)
@@ -143,7 +135,7 @@ class DataParse(
                     val byline = getString(7)
                     val result =
                         "ID: $id. Name = $url phone = $title email = $descrip copyright = $copyright imageUrl = $imageUrl source = $source byline = $byline"
-                    Log.d(TAG, "onCreate: reading data $result")
+                    //Log.d(TAG, "onCreate: reading data $result")
                 }
             }
         }
