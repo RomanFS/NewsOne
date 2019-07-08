@@ -40,8 +40,8 @@ class EmailActivity : BaseActivity(0), DataParse.AsyncResponse {
         news_rv.adapter = NewsAdapter(this, tableName, myDB, myImageDB)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         task.cancel(true)
     }
 }

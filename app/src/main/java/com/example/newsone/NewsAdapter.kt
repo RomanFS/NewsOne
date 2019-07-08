@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
@@ -22,6 +23,7 @@ class NewsAdapter(val context: Context,
                   private val myDB: MyDBHandler,
                   private val myImageDB: ImageDBHandler)
     : RecyclerView.Adapter<NewsAdapter.ViewHolder>(), ImageParse.AsyncImageResponse {
+    private lateinit var task: AsyncTask<Void, Void, Void>
     var count = 20
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -74,5 +76,4 @@ class NewsAdapter(val context: Context,
     override fun getItemCount(): Int {
         return 20
     }
-
 }
