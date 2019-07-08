@@ -5,9 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_email.*
 
-private val TAG = "BaseActivity"
-
 abstract class BaseActivity(private val itemNum: Int) : AppCompatActivity() {
+    private val TAG = "BaseActivity"
 
     fun setUpBtmNav() {
         btm_nav_view.setItemIconSizeRes(R.dimen.iconSize)

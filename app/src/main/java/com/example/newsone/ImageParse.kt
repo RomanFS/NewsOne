@@ -4,14 +4,13 @@ import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.util.Log
 
-private val TAG = "ImageParse"
-
 class ImageParse(private val delegate: AsyncImageResponse,
                  private val url: String,
                  private val holder: NewsAdapter.ViewHolder,
                  private val myDb: ImageDBHandler,
                  private val tableName: String,
                  private val position: Int) : AsyncTask<Void, Void, Void>() {
+    private val TAG = "ImageParse"
 
     interface AsyncImageResponse {
         fun processFinish(holder: NewsAdapter.ViewHolder, position: Int)

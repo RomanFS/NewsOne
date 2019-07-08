@@ -8,14 +8,13 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-private val TAG = "DataParse"
-
 class DataParse(
     private val delegate: AsyncResponse,
     private val parseUrl: String,
     private val tableName: String,
     private val myDB: MyDBHandler
 ) : AsyncTask<Void, Void, Void>() {
+    private val TAG = "DataParse"
     var data = ""
 
     interface AsyncResponse {

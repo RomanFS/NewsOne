@@ -10,12 +10,11 @@ import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream
 
 
-private val TAG = "ImageDBHandler"
-
 class ImageDBHandler(context: Context, name: String?,
                      factory: SQLiteDatabase.CursorFactory?, version: Int) :
     SQLiteOpenHelper(context, DATABASE_NAME,
         factory, DATABASE_VERSION) {
+    private val TAG = "ImageDBHandler"
 
     override fun onCreate(db: SQLiteDatabase) {
         val tableData = "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, bitmap BLOP)"
@@ -53,7 +52,7 @@ class ImageDBHandler(context: Context, name: String?,
         val db = this.writableDatabase
 
         db.insert(tableName, null, values)
-        db.close()
+        //db.close()
     }
 
     fun findImage(tableName: String, ID: Int): ImageObject? {
@@ -73,7 +72,7 @@ class ImageDBHandler(context: Context, name: String?,
             cursor.close()
         }
 
-        db.close()
+        //db.close()
         return image
     }
 
@@ -92,7 +91,7 @@ class ImageDBHandler(context: Context, name: String?,
             cursor.close()
             result = true
         }
-        db.close()
+        //db.close()
         return result
     }
 

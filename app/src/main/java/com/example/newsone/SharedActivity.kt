@@ -7,9 +7,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_email.*
 
-private val TAG = "SharedActivity"
-
 class SharedActivity : BaseActivity(2), DataParse.AsyncResponse {
+    private val TAG = "SharedActivity"
     private lateinit var task: AsyncTask<Void, Void, Void>
     private lateinit var myDB: MyDBHandler
     private lateinit var myImageDB: ImageDBHandler

@@ -1,9 +1,6 @@
 package com.example.newsone
 
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 
 class ImageObject {
     var id: Int = 0

@@ -5,8 +5,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-private val TAG = "MyDBHandler"
-
 class MyDBHandler(context: Context, name: String?,
                   factory: SQLiteDatabase.CursorFactory?, version: Int) :
     SQLiteOpenHelper(context, DATABASE_NAME,
@@ -55,6 +53,32 @@ class MyDBHandler(context: Context, name: String?,
 
     fun findNews(tableName: String, ID: Int): NewsObject? {
         val query = "SELECT * FROM $tableName WHERE _ID =  \"$ID\""
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(query, null)
+        var news: NewsObject? = null
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst()
+            val _id = Integer.parseInt(cursor.getString(0))
+            val url = cursor.getString(1)
+            val title = cursor.getString(2)
+            val descrip = cursor.getString(3)
+            val copyright = cursor.getString(4)
+            val imageUrl = cursor.getString(5)
+            val source = cursor.getString(6)
+            val publishedDate = cursor.getString(7)
+            val byline = cursor.getString(8)
+
+            news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
+            cursor.close()
+        }
+
+        db.close()
+        return news
+    }
+
+    fun findNews(tableName: String, newsUrl: String): NewsObject? {
+        val query = "SELECT * FROM $tableName WHERE url =  \"$newsUrl\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         var news: NewsObject? = null
