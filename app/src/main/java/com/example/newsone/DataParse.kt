@@ -1,6 +1,5 @@
 package com.example.newsone
 
-import android.content.Context
 import android.os.AsyncTask
 import android.util.Log
 import org.json.JSONObject

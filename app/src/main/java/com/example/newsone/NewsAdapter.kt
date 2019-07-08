@@ -19,7 +19,8 @@ private val TAG = "NewsAdapter"
 
 class NewsAdapter(val context: Context,
                   private val tableName: String,
-                  private val myDB: MyDBHandler)
+                  private val myDB: MyDBHandler,
+                  private val myImageDB: ImageDBHandler)
     : RecyclerView.Adapter<NewsAdapter.ViewHolder>(), ImageParse.AsyncImageResponse {
     var count = 20
 
@@ -56,15 +57,16 @@ class NewsAdapter(val context: Context,
         }
 
         // default image
-        val res = context.resources
-        item.image.setImageBitmap(BitmapFactory.decodeResource(res, R.drawable.large))
+       /* val res = context.resources
+        item.image.setImageBitmap(BitmapFactory.decodeResource(res, R.drawable.large))*/
 
         // get Image Bitmap
-        ImageParse(this, news.imageUrl, holder).execute()
+        ImageParse(this, news.imageUrl, holder, myImageDB, tableName, position+1).execute()
     }
 
-    override fun processFinish(output: Bitmap?, holder: ViewHolder) {
-        holder.itemView.image.setImageBitmap(output)
+    override fun processFinish(holder: ViewHolder, position: Int) {
+        val image = myImageDB.findImage(tableName, position) ?: return
+        holder.itemView.image.setImageBitmap(image.bitmap)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

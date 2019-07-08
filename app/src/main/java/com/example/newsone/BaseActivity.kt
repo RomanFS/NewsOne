@@ -39,4 +39,9 @@ abstract class BaseActivity(private val itemNum: Int) : AppCompatActivity() {
         // create DataBase
         return MyDBHandler(this, null, null, 1)
     }
+
+    fun getImageDB(): ImageDBHandler {
+        // create DataBase
+        return ImageDBHandler(this, null, null, 1)
+    }
 }

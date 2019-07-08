@@ -11,6 +11,7 @@ private val TAG = "EmailActivity"
 class EmailActivity : BaseActivity(0), DataParse.AsyncResponse {
     private lateinit var task: AsyncTask<Void, Void, Void>
     private lateinit var myDB: MyDBHandler
+    private lateinit var myImageDB: ImageDBHandler
 
     private val parseUrl = "https://api.nytimes.com/svc/mostpopular/v2/emailed/30.json?api-key=jx59ZPEaEg0uKWezOUF4I0KY3ZoAvMiZ"
     private val tableName = "emailed"
@@ -24,6 +25,7 @@ class EmailActivity : BaseActivity(0), DataParse.AsyncResponse {
         setUpBtmNav()
 
         myDB = getDB()
+        myImageDB = getImageDB()
 
         // start Parser
         task = DataParse(this, parseUrl, tableName, myDB).execute()
@@ -35,7 +37,7 @@ class EmailActivity : BaseActivity(0), DataParse.AsyncResponse {
     // Async parser result
     override fun processFinish() {
         Log.d(TAG, "processFinish: start Adapter")
-        news_rv.adapter = NewsAdapter(this, tableName, myDB)
+        news_rv.adapter = NewsAdapter(this, tableName, myDB, myImageDB)
     }
 
     override fun onDestroy() {

@@ -4,17 +4,21 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.Bitmap.CompressFormat
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
 
-private val TAG = "MyDBHandler"
 
-class MyDBHandler(context: Context, name: String?,
-                  factory: SQLiteDatabase.CursorFactory?, version: Int) :
+private val TAG = "ImageDBHandler"
+
+class ImageDBHandler(context: Context, name: String?,
+                     factory: SQLiteDatabase.CursorFactory?, version: Int) :
     SQLiteOpenHelper(context, DATABASE_NAME,
         factory, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        val tableData = "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, title TEXT, " +
-                "descrip TEXT, copyright TEXT, image_url TEXT, source TEXT, published_date TEXT, byline TEXT)"
+        val tableData = "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, bitmap BLOP)"
 
         val CREATE_EMAILED_TABLE = ("CREATE TABLE $TABLE_EMAILED$tableData")
         val CREATE_VIEWED_TABLE = ("CREATE TABLE $TABLE_VIEWED$tableData")
@@ -36,16 +40,15 @@ class MyDBHandler(context: Context, name: String?,
         onCreate(db)
     }
 
-    fun addNews(news: NewsObject, tableName: String) {
+    fun addImage(image: ImageObject, tableName: String) {
         val values = ContentValues()
-        values.put(url, news.url)
-        values.put(title, news.title)
-        values.put(descrip, news.descrip)
-        values.put(copyright, news.copyright)
-        values.put(imageUrl, news.imageUrl)
-        values.put(source, news.source)
-        values.put(publishedDate, news.publishedDate)
-        values.put(byline, news.byline)
+        values.put(url, image.url)
+
+        val blob = ByteArrayOutputStream()
+        image.bitmap.compress(CompressFormat.PNG, 0 /* Ignored for PNGs */, blob)
+        val bitmapdata = blob.toByteArray()
+
+        values.put(bitmap, bitmapdata)
 
         val db = this.writableDatabase
 
@@ -53,33 +56,28 @@ class MyDBHandler(context: Context, name: String?,
         db.close()
     }
 
-    fun findNews(tableName: String, ID: Int): NewsObject? {
+    fun findImage(tableName: String, ID: Int): ImageObject? {
         val query = "SELECT * FROM $tableName WHERE _ID =  \"$ID\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
-        var news: NewsObject? = null
+        var image: ImageObject? = null
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst()
             val _id = Integer.parseInt(cursor.getString(0))
             val url = cursor.getString(1)
-            val title = cursor.getString(2)
-            val descrip = cursor.getString(3)
-            val copyright = cursor.getString(4)
-            val imageUrl = cursor.getString(5)
-            val source = cursor.getString(6)
-            val publishedDate = cursor.getString(7)
-            val byline = cursor.getString(8)
+            val bitmap = BitmapFactory.decodeByteArray(cursor
+                .getBlob(2), 0, cursor.getBlob(2).size)
 
-            news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
+            image = ImageObject(url, bitmap)
             cursor.close()
         }
 
         db.close()
-        return news
+        return image
     }
 
-    fun deleteNews(tableName: String,newsTitle: String): Boolean {
+    fun deleteImage(tableName: String,newsTitle: String): Boolean {
         var result = false
         val query = "SELECT * FROM $tableName WHERE title = \"$newsTitle\""
         val db = this.writableDatabase
@@ -101,18 +99,12 @@ class MyDBHandler(context: Context, name: String?,
     companion object {
         private const val COLUMN_ID = "_ID"
         private const val DATABASE_VERSION = 1
-        private const val DATABASE_NAME = "newsData.db"
+        private const val DATABASE_NAME = "newsImageData.db"
         const val TABLE_EMAILED = "emailed"
         const val TABLE_VIEWED = "viewed"
         const val TABLE_SHARED = "shared"
         const val TABLE_FAVOURITE = "favourite"
         const val url = "url"
-        const val title = "title"
-        const val descrip = "descrip"
-        const val copyright = "copyright"
-        const val imageUrl = "image_url"
-        const val source = "source"
-        const val publishedDate = "published_date"
-        const val byline = "byline"
+        const val bitmap = "bitmap"
     }
 }

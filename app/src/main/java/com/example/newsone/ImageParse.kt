@@ -1,33 +1,37 @@
 package com.example.newsone
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
 import android.util.Log
 
+private val TAG = "ImageParse"
+
 class ImageParse(private val delegate: AsyncImageResponse,
-                 val url: String,
-                 val holder: NewsAdapter.ViewHolder) : AsyncTask<Void, Void, Bitmap?>() {
-    private val TAG = "ImageParse"
-    private var mIcon: Bitmap? = null
+                 private val url: String,
+                 private val holder: NewsAdapter.ViewHolder,
+                 private val myDb: ImageDBHandler,
+                 private val tableName: String,
+                 private val position: Int) : AsyncTask<Void, Void, Void>() {
 
     interface AsyncImageResponse {
-        fun processFinish(output: Bitmap?, holder: NewsAdapter.ViewHolder)
+        fun processFinish(holder: NewsAdapter.ViewHolder, position: Int)
     }
 
-    override fun doInBackground(vararg params: Void): Bitmap? {
+    override fun doInBackground(vararg params: Void): Void? {
         try {
             val stream = java.net.URL(url).openStream()
-            mIcon = BitmapFactory.decodeStream(stream)
+            val mIcon = BitmapFactory.decodeStream(stream) ?: return null
+
+            myDb.addImage(ImageObject(url, mIcon), tableName)
         } catch (e: Exception) {
             Log.e("Error", e.message)
             e.printStackTrace()
         }
 
-        return mIcon
+        return null
     }
 
-    override fun onPostExecute(result: Bitmap?) {
-        delegate.processFinish(result, holder)
+    override fun onPostExecute(result: Void?) {
+        delegate.processFinish(holder, this.position)
     }
 }
