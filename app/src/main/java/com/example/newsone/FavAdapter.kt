@@ -46,6 +46,16 @@ class FavAdapter(val context: Context,
 
         val image = myImageDB.findImage(tableName, position+1) ?: return
         holder.itemView.image.setImageBitmap(image.bitmap)
+
+        item.see_more.setOnClickListener {
+            val intent = Intent(context, InnerActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            val extras = Bundle()
+            extras.putString("url", news.url)
+            extras.putBoolean("added", news.added)
+            intent.putExtras(extras)
+            ContextCompat.startActivity(context, intent, Bundle())
+        }
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

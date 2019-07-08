@@ -4,15 +4,17 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class MyDBHandler(context: Context, name: String?,
                   factory: SQLiteDatabase.CursorFactory?, version: Int) :
     SQLiteOpenHelper(context, DATABASE_NAME,
         factory, DATABASE_VERSION) {
+    private val TAG = "MyDBHandler"
 
     override fun onCreate(db: SQLiteDatabase) {
         val tableData = "(_id INTEGER PRIMARY KEY NOT NULL, url TEXT, title TEXT, " +
-                "descrip TEXT, copyright TEXT, image_url TEXT, source TEXT, published_date TEXT, byline TEXT)"
+                "descrip TEXT, copyright TEXT, image_url TEXT, source TEXT, published_date TEXT, byline TEXT, added BIT)"
 
         val CREATE_EMAILED_TABLE = ("CREATE TABLE $TABLE_EMAILED$tableData")
         val CREATE_VIEWED_TABLE = ("CREATE TABLE $TABLE_VIEWED$tableData")
@@ -44,6 +46,7 @@ class MyDBHandler(context: Context, name: String?,
         values.put(source, news.source)
         values.put(publishedDate, news.publishedDate)
         values.put(byline, news.byline)
+        values.put(added, news.added)
 
         val db = this.writableDatabase
 
@@ -52,7 +55,7 @@ class MyDBHandler(context: Context, name: String?,
     }
 
     fun findNews(tableName: String, ID: Int): NewsObject? {
-        val query = "SELECT * FROM $tableName WHERE _ID =  \"$ID\""
+        val query = "SELECT * FROM $tableName WHERE $COLUMN_ID =  \"$ID\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         var news: NewsObject? = null
@@ -68,8 +71,9 @@ class MyDBHandler(context: Context, name: String?,
             val source = cursor.getString(6)
             val publishedDate = cursor.getString(7)
             val byline = cursor.getString(8)
+            val added = cursor.getInt(9) > 0
 
-            news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
+            news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline, added)
             cursor.close()
         }
 
@@ -78,7 +82,7 @@ class MyDBHandler(context: Context, name: String?,
     }
 
     fun findNews(tableName: String, newsUrl: String): NewsObject? {
-        val query = "SELECT * FROM $tableName WHERE url =  \"$newsUrl\""
+        val query = "SELECT * FROM $tableName WHERE $url =  \"$newsUrl\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         var news: NewsObject? = null
@@ -94,8 +98,9 @@ class MyDBHandler(context: Context, name: String?,
             val source = cursor.getString(6)
             val publishedDate = cursor.getString(7)
             val byline = cursor.getString(8)
+            val added = cursor.getInt(9) > 0
 
-            news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
+            news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline, added)
             cursor.close()
         }
 
@@ -103,9 +108,9 @@ class MyDBHandler(context: Context, name: String?,
         return news
     }
 
-    fun deleteNews(tableName: String,newsTitle: String): Boolean {
+    fun deleteNews(tableName: String, newsTitle: String): Boolean {
         var result = false
-        val query = "SELECT * FROM $tableName WHERE title = \"$newsTitle\""
+        val query = "SELECT * FROM $tableName WHERE $title = \"$newsTitle\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
 
@@ -118,7 +123,19 @@ class MyDBHandler(context: Context, name: String?,
             cursor.close()
             result = true
         }
-        db.close()
+        //db.close()
+        return result
+    }
+
+    fun setAdded(tableName: String, newsUrl: String): Boolean {
+        var result = false
+        val query = "UPDATE $tableName SET $added = 1 WHERE $url = \"$newsUrl\""
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(query, null)
+        Log.d(TAG, "setAdded: $title")
+        cursor.close()
+        result = true
+
         return result
     }
 
@@ -138,5 +155,6 @@ class MyDBHandler(context: Context, name: String?,
         const val source = "source"
         const val publishedDate = "published_date"
         const val byline = "byline"
+        const val added = "added"
     }
 }

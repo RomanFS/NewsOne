@@ -10,9 +10,10 @@ class NewsObject {
     var source = ""
     var publishedDate = ""
     var byline = ""
+    var added = false
 
     constructor(id: Int, url: String, title: String, descrip: String, copyright: String, image_url: String, source: String,
-                published_date: String, byline: String) {
+                published_date: String, byline: String, added: Boolean) {
         this.id = id
         this.url = url
         this.title = title
@@ -22,10 +23,11 @@ class NewsObject {
         this.source = source
         this.publishedDate = published_date
         this.byline = byline
+        this.added = added
     }
 
     constructor(url: String, title: String, descrip: String, copyright: String, image_url: String, source: String,
-                published_date: String, byline: String) {
+                published_date: String, byline: String, added: Boolean) {
         this.url = url
         this.title = title
         this.descrip = descrip
@@ -34,5 +36,6 @@ class NewsObject {
         this.source = source
         this.publishedDate = published_date
         this.byline = byline
+        this.added = added
     }
 }

@@ -75,8 +75,9 @@ class DataParse(
             val source = oneNews.getString("source")
             val publishedDate = oneNews.getString("published_date")
             val byline = oneNews.getString("byline")
+            val added = false
 
-            val news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
+            val news = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline, added)
 
             myDB.addNews(news, tableName)
         }

@@ -37,20 +37,28 @@ class NewsAdapter(val context: Context,
         if (myDB.findNews(tableName, position+1) == null) return
         val item = holder.itemView
         val news = myDB.findNews(tableName, position+1)!!
+
         item.title.text = news.title
         item.desc.text = news.descrip
         item.copyright.text = news.copyright
         item.source.text = news.source
         item.published_date.text = news.publishedDate
         item.byline.text = news.byline
+        Log.d(TAG, "onBindViewHolder: " + news.added.toString())
+        item.add_to_favourite.isActivated = news.added
+
         item.see_more.setOnClickListener {
             val intent = Intent(context, InnerActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            intent.putExtra("url", news.url)
+            val extras = Bundle()
+            extras.putString("url", news.url)
+            extras.putBoolean("added", news.added)
+            intent.putExtras(extras)
             startActivity(context, intent, Bundle())
         }
 
         item.add_to_favourite.setOnClickListener{
+            it.isActivated = true
             if (myDB.findNews("favourite", news.url) != null) return@setOnClickListener
 
             val url = news.url
@@ -61,9 +69,12 @@ class NewsAdapter(val context: Context,
             val source = news.source
             val publishedDate = news.publishedDate
             val byline = news.byline
+            val added = news.added
 
-            val addNews = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline)
+            val addNews = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline, added)
             myDB.addNews(addNews, "favourite")
+
+            myDB.setAdded(tableName, news.url)
 
             val imageObj = ImageObject(news.imageUrl, map[position+1]!!)
             myImageDB.addImage(imageObj, "favourite")
