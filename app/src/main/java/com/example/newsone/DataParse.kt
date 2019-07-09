@@ -23,10 +23,6 @@ class DataParse(
 
     override fun doInBackground(vararg voids: Void): Void? {
         try {
-            /*val connectivityManager=EmailActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkInfo=connectivityManager.activeNetworkInfo
-            if (!(networkInfo!=null && networkInfo.isConnected)) return null*/
-
             val url = URL(parseUrl)
             val httpURLConnection = url.openConnection() as HttpURLConnection
             val inputStream = httpURLConnection.inputStream
@@ -81,28 +77,6 @@ class DataParse(
 
             myDB.addNews(news, tableName)
         }
-
-        /*val query = database.rawQuery("SELECT * FROM $tableName", null)
-        query.use {
-            while (it.moveToNext()) {
-                // Cycle through all records
-                with(it) {
-                    val id = getLong(0)
-                    val url = getString(1)
-                    val title = getString(2)
-                    val descrip = getString(3)
-                    val copyright = getString(4)
-                    val imageUrl = getString(5)
-                    val source = getString(6)
-                    val byline = getString(7)
-                    val result =
-                        "ID: $id. Name = $url phone = $title email = $descrip copyright = $copyright imageUrl = $imageUrl source = $source byline = $byline"
-                    //Log.d(TAG, "onCreate: reading data $result")
-                }
-            }
-        }
-
-        database.close()*/
     }
 
     override fun onPostExecute(result: Void?) {

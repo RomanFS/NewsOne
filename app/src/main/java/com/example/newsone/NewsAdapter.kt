@@ -14,8 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.news_item.view.*
-import org.json.JSONObject
-import java.io.File
 
 class NewsAdapter(val context: Context,
                   private val tableName: String,
@@ -24,7 +22,7 @@ class NewsAdapter(val context: Context,
     : RecyclerView.Adapter<NewsAdapter.ViewHolder>(), ImageParse.AsyncImageResponse {
     private val TAG = "NewsAdapter"
     private lateinit var task: AsyncTask<Void, Void, Void>
-    private val map = mutableMapOf<Int, Bitmap>()
+    private val map = mutableMapOf<String, Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
@@ -48,7 +46,6 @@ class NewsAdapter(val context: Context,
         item.published_date.text = news.publishedDate
         item.byline.text = news.byline
         Log.d(TAG, "onBindViewHolder: " + news.added.toString())
-        item.add_to_favourite.isActivated = news.added
 
         item.see_more.setOnClickListener {
             val intent = Intent(context, InnerActivity::class.java)
@@ -73,32 +70,36 @@ class NewsAdapter(val context: Context,
             val source = news.source
             val publishedDate = news.publishedDate
             val byline = news.byline
-            val added = news.added
+            val added = true
 
             val addNews = NewsObject(url, title, descrip, copyright, imageUrl, source, publishedDate, byline, added)
             myDB.addNews(addNews, "favourite")
 
-            myDB.setAdded(tableName, news.url)
+            myDB.setAdded("emailed", news.url)
+            Log.d(TAG, "onBindViewHolder: setAdded")
+            myDB.setAdded("shared", news.url)
+            myDB.setAdded("viewed", news.url)
 
-            val imageObj = ImageObject(news.imageUrl, map[position+1]!!)
+            val imageObj = ImageObject(news.imageUrl, map[news.imageUrl]!!)
             myImageDB.addImage(imageObj, "favourite")
             Toast.makeText(context, "Added to favourite", Toast.LENGTH_LONG).show()
         }
 
+        item.add_to_favourite.isActivated = news.added
 
-        val image = myImageDB.findImage(tableName, position+1)
+        val image = myImageDB.findImage(tableName, news.imageUrl)
         if (image != null) {
             item.image.setImageBitmap(image.bitmap)
-            map[position] = image.bitmap
+            map[news.imageUrl] = image.bitmap
             return
         }
         // start ImageParser
-        ImageParse(this, news.imageUrl, holder, myImageDB, tableName, position+1).execute()
+        ImageParse(this, news.imageUrl, holder, myImageDB, tableName).execute()
     }
 
-    override fun processFinish(holder: ViewHolder, position: Int) {
-        val image = myImageDB.findImage(tableName, position) ?: return
-        map[position] = image.bitmap
+    override fun processFinish(holder: ViewHolder, imageUrl: String) {
+        val image = myImageDB.findImage(tableName, imageUrl) ?: return
+        map[imageUrl] = image.bitmap
         holder.itemView.image.setImageBitmap(image.bitmap)
     }
 

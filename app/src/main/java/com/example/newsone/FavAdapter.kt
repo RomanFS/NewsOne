@@ -38,7 +38,7 @@ class FavAdapter(val context: Context,
         item.published_date.text = news.publishedDate
         item.byline.text = news.byline
 
-        val image = myImageDB.findImage(tableName, position+1) ?: return
+        val image = myImageDB.findImage(tableName, news.imageUrl) ?: return
         holder.itemView.image.setImageBitmap(image.bitmap)
 
         item.see_more.setOnClickListener {
@@ -46,6 +46,7 @@ class FavAdapter(val context: Context,
             intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             val extras = Bundle()
             extras.putString("url", news.url)
+            Log.d(TAG, "onBindViewHolder: " + news.added.toString())
             extras.putBoolean("added", news.added)
             extras.putString("title", news.title)
             extras.putString("tableName", tableName)
@@ -58,7 +59,7 @@ class FavAdapter(val context: Context,
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun getItemCount(): Int {
-        return 20
+        return myDB.getItemCount(tableName)
     }
 
 }

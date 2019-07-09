@@ -127,16 +127,23 @@ class MyDBHandler(context: Context, name: String?,
         return result
     }
 
-    fun setAdded(tableName: String, newsUrl: String): Boolean {
-        var result = false
-        val query = "UPDATE $tableName SET $added = 1 WHERE $url = \"$newsUrl\""
+    fun setAdded(tableName: String, newsUrl: String) {
+        val query = "UPDATE $tableName SET $added = '1' WHERE $url = \"$newsUrl\""
+        val db = this.writableDatabase
+        db.execSQL(query)
+    }
+
+    fun getItemCount(tableName: String): Int {
+        val query = "SELECT * FROM $tableName ORDER BY $COLUMN_ID DESC LIMIT 1"
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
-        Log.d(TAG, "setAdded: $title")
+        var count = 0
+        cursor.use {
+            if (it.moveToFirst()) { count = it.getInt(0)}
+        }
         cursor.close()
-        result = true
-
-        return result
+        Log.d(TAG, "getItemCount: $count")
+        return count
     }
 
     companion object {

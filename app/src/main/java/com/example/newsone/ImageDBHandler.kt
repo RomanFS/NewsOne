@@ -55,8 +55,8 @@ class ImageDBHandler(context: Context, name: String?,
         //db.close()
     }
 
-    fun findImage(tableName: String, ID: Int): ImageObject? {
-        val query = "SELECT * FROM $tableName WHERE _ID =  \"$ID\""
+    fun findImage(tableName: String, imageUrl: String): ImageObject? {
+        val query = "SELECT * FROM $tableName WHERE $url =  \"$imageUrl\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(query, null)
         var image: ImageObject? = null

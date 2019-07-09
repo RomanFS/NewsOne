@@ -49,12 +49,6 @@ class InnerActivity: AppCompatActivity() {
         val client = AndroidWebClient(hashName, filesDir)
         web_view.webViewClient = client
 
-       /* val PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (ContextCompat.checkSelfPermission(this, PERMISSIONS[0]) != PackageManager.PERMISSION_GRANTED
-            || ContextCompat.checkSelfPermission(this, PERMISSIONS[1]) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, 1)
-        }*/
         var file = File(filesDir.absolutePath + separator + hashDir)
         file.mkdirs()
 

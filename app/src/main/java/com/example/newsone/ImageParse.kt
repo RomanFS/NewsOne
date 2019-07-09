@@ -8,12 +8,11 @@ class ImageParse(private val delegate: AsyncImageResponse,
                  private val url: String,
                  private val holder: NewsAdapter.ViewHolder,
                  private val myDb: ImageDBHandler,
-                 private val tableName: String,
-                 private val position: Int) : AsyncTask<Void, Void, Void>() {
+                 private val tableName: String) : AsyncTask<Void, Void, Void>() {
     private val TAG = "ImageParse"
 
     interface AsyncImageResponse {
-        fun processFinish(holder: NewsAdapter.ViewHolder, position: Int)
+        fun processFinish(holder: NewsAdapter.ViewHolder, imageUrl: String)
     }
 
     override fun doInBackground(vararg params: Void): Void? {
@@ -31,6 +30,6 @@ class ImageParse(private val delegate: AsyncImageResponse,
     }
 
     override fun onPostExecute(result: Void?) {
-        delegate.processFinish(holder, this.position)
+        delegate.processFinish(holder, this.url)
     }
 }
