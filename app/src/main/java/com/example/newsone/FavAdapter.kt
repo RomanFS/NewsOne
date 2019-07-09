@@ -2,13 +2,16 @@ package com.example.newsone
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.activity_favourite.*
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class FavAdapter(val context: Context,
@@ -18,7 +21,14 @@ class FavAdapter(val context: Context,
     private val tableName = "favourite"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+        val res = context.resources
+        val orientation = res.configuration.orientation
+        val view: View
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.news_item_hor, parent, false)
+        } else {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+        }
         return ViewHolder(view)
     }
 

@@ -1,6 +1,7 @@
 package com.example.newsone
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -33,7 +34,12 @@ class ViewedActivity : BaseActivity(1), DataParse.AsyncResponse {
         task = DataParse(this, parseUrl, tableName, myDB).execute()
 
         // call adapter
-        news_rv.layoutManager = LinearLayoutManager(this)
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            news_rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        } else {
+            news_rv.layoutManager = LinearLayoutManager(this)
+        }
     }
 
     // Async parser result

@@ -2,6 +2,8 @@ package com.example.newsone
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
@@ -25,9 +27,17 @@ class NewsAdapter(val context: Context,
     private val map = mutableMapOf<String, Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
         val res = context.resources
+        val orientation = res.configuration.orientation
+        val view: View
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.news_item_hor, parent, false)
+        } else {
+            view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+        }
         view.image.setImageBitmap(BitmapFactory.decodeResource(res, R.drawable.large))
+        view.image.layoutParams.height = res.getDimension(R.dimen.imageHeight).toInt()
+        view.image.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
         return ViewHolder(view)
     }
 
@@ -80,6 +90,7 @@ class NewsAdapter(val context: Context,
             myDB.setAdded("shared", news.url)
             myDB.setAdded("viewed", news.url)
 
+            if (map[news.imageUrl] == null) return@setOnClickListener
             val imageObj = ImageObject(news.imageUrl, map[news.imageUrl]!!)
             myImageDB.addImage(imageObj, "favourite")
             Toast.makeText(context, "Added to favourite", Toast.LENGTH_LONG).show()
@@ -89,7 +100,10 @@ class NewsAdapter(val context: Context,
 
         val image = myImageDB.findImage(tableName, news.imageUrl)
         if (image != null) {
+            val res = context.resources
             item.image.setImageBitmap(image.bitmap)
+            item.image.layoutParams.height = res.getDimension(R.dimen.imageHeight).toInt()
+            item.image.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
             map[news.imageUrl] = image.bitmap
             return
         }
@@ -99,8 +113,12 @@ class NewsAdapter(val context: Context,
 
     override fun processFinish(holder: ViewHolder, imageUrl: String) {
         val image = myImageDB.findImage(tableName, imageUrl) ?: return
+        val res = context.resources
         map[imageUrl] = image.bitmap
-        holder.itemView.image.setImageBitmap(image.bitmap)
+        val imageView = holder.itemView.image
+        imageView.setImageBitmap(image.bitmap)
+        imageView.layoutParams.height = res.getDimension(R.dimen.imageHeight).toInt()
+        imageView.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

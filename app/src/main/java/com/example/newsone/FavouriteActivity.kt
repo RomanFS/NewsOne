@@ -1,9 +1,12 @@
 package com.example.newsone
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_email.*
 import kotlinx.android.synthetic.main.activity_favourite.*
+import kotlinx.android.synthetic.main.activity_favourite.news_rv
 
 class FavouriteActivity : BaseActivity(3) {
     private val TAG = "FavouriteActivity"
@@ -22,7 +25,12 @@ class FavouriteActivity : BaseActivity(3) {
         myDB = getDB()
         myImageDB = getImageDB()
 
-        news_rv.layoutManager = LinearLayoutManager(this)
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            news_rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        } else {
+            news_rv.layoutManager = LinearLayoutManager(this)
+        }
         news_rv.adapter = FavAdapter(this, myDB, myImageDB)
     }
 }
