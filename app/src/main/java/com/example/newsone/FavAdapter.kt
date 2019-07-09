@@ -55,6 +55,7 @@ class FavAdapter(val context: Context,
             extras.putBoolean("added", news.added)
             intent.putExtras(extras)
             ContextCompat.startActivity(context, intent, Bundle())
+
         }
     }
 

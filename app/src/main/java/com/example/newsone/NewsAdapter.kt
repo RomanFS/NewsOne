@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.news_item.view.*
 import org.json.JSONObject
+import java.io.File
 
 class NewsAdapter(val context: Context,
                   private val tableName: String,
@@ -27,6 +28,8 @@ class NewsAdapter(val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+        val res = context.resources
+        view.image.setImageBitmap(BitmapFactory.decodeResource(res, R.drawable.large))
         return ViewHolder(view)
     }
 
@@ -81,6 +84,12 @@ class NewsAdapter(val context: Context,
             Toast.makeText(context, "Added to favourite", Toast.LENGTH_LONG).show()
         }
 
+
+        val image = myImageDB.findImage(tableName, position+1)
+        if (image != null) {
+            item.image.setImageBitmap(image.bitmap)
+            return
+        }
         // start ImageParser
         ImageParse(this, news.imageUrl, holder, myImageDB, tableName, position+1).execute()
     }
