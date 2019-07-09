@@ -8,6 +8,7 @@ import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import kotlinx.android.synthetic.main.activity_inner.*
+import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import java.io.File
 import java.io.File.separator
@@ -40,7 +41,8 @@ class InnerActivity: AppCompatActivity() {
             return
         }
 
-        val hashName = DigestUtils.sha1Hex(title+url) + ".mht"
+        val hash = DigestUtils.sha1(title+url)
+        val hashName = String(Hex.encodeHex(hash)) + ".mht"
 
         hashPage(hashName, url)
     }
@@ -48,7 +50,6 @@ class InnerActivity: AppCompatActivity() {
     private fun hashPage(hashName: String, url: String) {
         val client = AndroidWebClient(hashName, filesDir)
         web_view.webViewClient = client
-
         var file = File(filesDir.absolutePath + separator + hashDir)
         file.mkdirs()
 
