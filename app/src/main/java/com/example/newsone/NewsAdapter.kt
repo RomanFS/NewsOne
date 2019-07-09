@@ -89,6 +89,7 @@ class NewsAdapter(val context: Context,
         val image = myImageDB.findImage(tableName, position+1)
         if (image != null) {
             item.image.setImageBitmap(image.bitmap)
+            map[position] = image.bitmap
             return
         }
         // start ImageParser

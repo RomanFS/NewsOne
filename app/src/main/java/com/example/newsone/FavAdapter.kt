@@ -37,12 +37,6 @@ class FavAdapter(val context: Context,
         item.source.text = news.source
         item.published_date.text = news.publishedDate
         item.byline.text = news.byline
-        item.see_more.setOnClickListener {
-            val intent = Intent(context, InnerActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            intent.putExtra("url", news.url)
-            ContextCompat.startActivity(context, intent, Bundle())
-        }
 
         val image = myImageDB.findImage(tableName, position+1) ?: return
         holder.itemView.image.setImageBitmap(image.bitmap)
