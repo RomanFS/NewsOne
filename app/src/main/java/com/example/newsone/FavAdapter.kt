@@ -53,6 +53,8 @@ class FavAdapter(val context: Context,
             val extras = Bundle()
             extras.putString("url", news.url)
             extras.putBoolean("added", news.added)
+            extras.putString("title", news.title)
+            extras.putString("tableName", tableName)
             intent.putExtras(extras)
             ContextCompat.startActivity(context, intent, Bundle())
 

@@ -56,6 +56,7 @@ class NewsAdapter(val context: Context,
             val extras = Bundle()
             extras.putString("url", news.url)
             extras.putBoolean("added", news.added)
+            extras.putString("title", news.title)
             intent.putExtras(extras)
             startActivity(context, intent, Bundle())
         }
